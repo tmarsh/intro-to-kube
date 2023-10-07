@@ -188,6 +188,8 @@ nginx-deployment-57d84f57dc-qh6k9     1/1     Running   0             18m    10.
       postgres-config  ConfigMap  Optional: false
    ```
 
+
+
 4. Lastly let's test out to see if we can persist our database!
 
    Let's test the connection to the DB from outside the cluster from the service by running:

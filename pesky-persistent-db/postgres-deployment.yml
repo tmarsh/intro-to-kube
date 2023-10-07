@@ -18,6 +18,17 @@ spec:
           imagePullPolicy: "IfNotPresent"
           ports:
             - containerPort: 5432 # Exposes container port
+          volumeMounts:
+            - mountPath: /var/lib/postgresql/data
+              name: postgres-pv-volume
+          envFrom:
+            - configMapRef:
+                name: postgres-config
+      volumes: 
+        - name: postgres-pv-volume
+          persistentVolumeClaim:
+            claimName: postgres-pv-claim
+          
           # TODO:
           # a. Add a config map reference to your secrets
           # b. Add the following volumeMounts:
