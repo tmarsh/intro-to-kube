@@ -4,8 +4,10 @@ metadata:
   name: DBAdmin
   namespace: database # TODO: Re-run this file with other necessary ns
 rules:
-# TODO:
-# target all resources with full access
+- apiGroups: [""]
+  resources: ["*"]
+  verbs: ["get", "watch", "list", "create", "update", "patch", "delete"]
+
 ---
 kind: RoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
@@ -13,7 +15,41 @@ metadata:
   name: DBAdminBinding
   namespace: database # TODO: Re-run this file with other necessary ns, match with role above
 subjects:
+- apiGroup: rbac.authorization.k8s.io
+  kind: User
+  name: "Jessica"
+
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: DBAdmin
+
+
+---
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: DBAdminBackup
+  namespace: backup # TODO: Re-run this file with other necessary ns
+rules:
+- apiGroups: [""]
+  resources: ["*"]
+  verbs: ["get", "watch", "list", "create", "update", "patch", "delete"]
+
+---
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: DBAdminBindingBackup
+  namespace: backup # TODO: Re-run this file with other necessary ns, match with role above
+subjects:
+- apiGroup: rbac.authorization.k8s.io
+  kind: User
+  name: "Jessica"
 # TODO: add Jessica as target user
 # note: this is case sensitive
 roleRef:
-# TODO: add target role to DBAdmin
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: DBAdminBackup
+
