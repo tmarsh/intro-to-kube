@@ -4,6 +4,10 @@ metadata:
   name: Developer
   namespace: dev # TODO: Re-run this file with other necessary ns
 rules:
+- apiGroups: [""]
+  resources: ["*"]
+  verbs: ["get", "watch", "list", "create", "update", "patch"]
+
 # TODO:
 # target all resources with full access
 ---
@@ -13,7 +17,68 @@ metadata:
   name: DeveloperBinding
   namespace: dev # TODO: Re-run this file with other necessary ns, match with role above
 subjects:
-# TODO: add Joey as target user
-# note: this is case sensitive
+- apiGroup: rbac.authorization.k8s.io
+  kind: User
+  name: "Joey"
+
 roleRef:
-# TODO: add target role to Developer
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: Developer
+---
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: DeveloperProd
+  namespace: prod # TODO: Re-run this file with other necessary ns
+rules:
+- apiGroups: [""]
+  resources: ["*"]
+  verbs: ["get", "watch", "list", "create", "update", "patch"]
+
+# TODO:
+# target all resources with full access
+---
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: DeveloperBindingProd
+  namespace: prod # TODO: Re-run this file with other necessary ns, match with role above
+subjects:
+- apiGroup: rbac.authorization.k8s.io
+  kind: User
+  name: "Joey"
+
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: DeveloperProd
+
+---
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: DeveloperStaging
+  namespace: staging # TODO: Re-run this file with other necessary ns
+rules:
+- apiGroups: [""]
+  resources: ["*"]
+  verbs: ["get", "watch", "list", "create", "update", "patch"]
+
+# TODO:
+# target all resources with full access
+---
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: DeveloperBindingStaging
+  namespace: staging # TODO: Re-run this file with other necessary ns, match with role above
+subjects:
+- apiGroup: rbac.authorization.k8s.io
+  kind: User
+  name: "Joey"
+
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: DeveloperStaging
