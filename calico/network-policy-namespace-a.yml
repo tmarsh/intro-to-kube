@@ -1,9 +1,28 @@
 apiVersion: networking.k8s.io/v1
+#apiVersion: projectcalico.org/v3
+
 kind: NetworkPolicy
 metadata:
   name: network-policy-for-namespace-a
   namespace: namespace-a
 spec:
+  policyTypes:
+    - Ingress
+    - Egress
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              name: namespace-b
+  egress:
+    - to:
+         - namespaceSelector:
+            matchExpressions:
+            - key: name
+              operator: In
+              values: ["namespace-b", "namespace-c"]
+
+
   # TODO:
   # Define ingress
   # Define egress

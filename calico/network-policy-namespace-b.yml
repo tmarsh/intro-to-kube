@@ -4,6 +4,20 @@ metadata:
   name: network-policy-for-namespace-b
   namespace: namespace-b
 spec:
+  policyTypes:
+    - Ingress
+    - Egress
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              name: namespace-a
+  egress:
+    - to:
+         - namespaceSelector:
+            matchLabels:
+              name: namespace-a
+
   # TODO:
   # Define ingress
   # Define egress
