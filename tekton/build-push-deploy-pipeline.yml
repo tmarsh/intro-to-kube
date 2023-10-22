@@ -4,8 +4,47 @@ metadata:
   name: build-push-deploy
 spec:
   tasks:
+  - name: build
+    taskRef:
+      name: build
+    params:
+      - name: REPO_URL
+        value: https://github.com/expressjs/express.git
+
+  - name: push
+    taskRef:
+      name: push
+    params:
+      - name: IMAGE_NAME
+        value: nginx:latest
+      - name: DOCKERFILE_PATH
+        value: /workspace/source
+      - name: CONTEXT_PATH
+        value: /workspace/source
+      - name: CONTAINER_REGISTRY
+        value: registry.example.com
+      - name: REGISTRY_USERNAME
+        value: Tim
+      - name: REGISTRY_PASSWORD
+        value: password1234
+    runAfter: 
+      - build
+
+  - name: deploy 
+    taskRef:
+      name: deploy
+    params:
+      - name: NAMESPACE
+        value: default
+      - name: IMAGE
+        value: nginx:latest
+      - name: REPO_URL
+        value: https://github.com/abanuelo/intro-to-kube
+    runAfter: 
+      - push
+
     # TODO:
-    # Add reference to the build, push, and deploy tasks
+    # Add reference to the build, push, and deploy tsks
     # 1. For the build task add these env variables
     #   - REPO URL = https://github.com/expressjs/express.git
     # 2. For the push task add these env variables
